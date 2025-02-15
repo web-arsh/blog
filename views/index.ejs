@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Fontawesome -->
+    <script src="https://kit.fontawesome.com/ad1ad54b86.js" crossorigin="anonymous"></script>
+    <!-- Google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Responsive design</title>
+  </head>
+  <body>
+   <!-- nav-bar -->
+    <%- include("partials/navbar") %>
+    <!-- header -->
+    <header>
+      <div class="header-content">
+        <h1>You write, We read</h1>
+        <p>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Asperiores
+          reiciendis
+        </p>
+        <% if (loginUser) { %>
+          <a href="/api/v1/get-post-form">
+            <span>Create New Post</span>
+          </a>
+        <% } %>
+      </div>
+    </header>
+    <!-- Latest post title -->
+
+    <div class="latest-post-title">
+      <!-- Icon -->
+      <div class="icon">
+        <i class="fas fa-book-open"></i>
+      </div>
+      <h1>Latest Posts (<%= (posts?.length !== 0 ? posts?.length : 0) %>)</h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
+        voluptates.
+      </p>
+    </div>
+
+    <!-- content -->
+    <section class="container-flex">        
+      <% if (posts?.length <= 0 ) { %>
+       <h1>No Post found</h1>
+      <% } else { %>
+       <% posts?.forEach(element => { %> 
+        <article class="post-content">
+          
+          <img src="<%= element?.image %>" alt="" class="post-image" />
+          <p class="post-info">
+            <span class="post-author">
+              <i class="fas fa-user"></i>
+              <a href="#">
+                <%= element?.user?.fullname %>
+              </a>
+            </span>
+            <span class="post-date">
+              <i class="far fa-calendar-alt"></i>
+              <time datetime="<%= element?.createdAt.toLocaleDateString() %>">
+                <%= element?.createdAt.toLocaleDateString() %>
+              </time>
+            </span>
+          </p><h1 class="post-title">
+            <%= element?.title %>
+          </h1>
+          <p class="post-body">
+            <%= tranucate(element?.description) %>
+          </p>
+          <!-- category -->
+          <div class="post-category">
+            <span>Category: <%= element?.category %></span>
+          </div>
+          <a href="/api/v1/posts/<%= element?._id %>" class="post-read-more">Continue Reading...</a>
+        </article>
+       <% }) %>
+      <% } %>
+    </section>
+    <!-- footer -->
+     <%- include("partials/footer") %>
+  </body> 
+</html>
